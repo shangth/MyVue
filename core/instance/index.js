@@ -1,7 +1,7 @@
 // 这个文件是Sth的主函数
 // 
 
-import initMixIn from './init.js';
+import {initMixIn} from './init.js';
 
 
 function Sth(options) {

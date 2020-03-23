@@ -1,3 +1,3 @@
-import Sth from './instance/index';
+import Sth from './instance/index.js';
 
 export default Sth
