@@ -7,9 +7,7 @@
 // vm表示Sth对象，obj表示要代理的对象，namespace表示命名空间
 // 判断data的数据类型，做不同的代理
 export function construtionProxy(vm, data, namespace) {
-    debugger
     let proxy = null
-    // console.log(data, data instanceof Array, data instanceof Object)
     if (data instanceof Array) {
         proxy = new Array(data.length);
         for (let i = 0; i < data.length; i++) {
