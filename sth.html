@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="test">
+        {{title}}<br>
+        <span>{{sayHi}}</span>
+    </div>
+    <script type="module">
+        import Sth from './core/index.js';
+        // 这里由于是一个模块，let的变量为局部变量，控制台无法访问，这里将sth放在window下，全局即可访问
+        window.sth = new Sth({
+            el: 'test',
+            data: {
+                title: '这是标题',
+                sayHi: '商天寒说：“hi~”'
+            }
+        })
+    </script>
+</body>
+</html>
