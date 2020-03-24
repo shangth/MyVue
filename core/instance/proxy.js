@@ -4,6 +4,12 @@
 // construtionObjectProxy         代理对象      代理数组主要做的是递归代理自己和自己下面的属性
 // construtionArrayProxy          代理数组      代理数组主要做的是代理数组本身和自己的方法
 
+
+import {renderData} from './render.js'
+
+
+
+
 // vm表示Sth对象，obj表示要代理的对象，namespace表示命名空间
 // 判断data的数据类型，做不同的代理
 export function construtionProxy(vm, data, namespace) {
@@ -34,6 +40,7 @@ function construtionObjectProxy(vm, obj, namespace) {
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
                 obj[prop] = value;
+                renderData(vm, getNameSpace(namespace, prop))
             }
         })
         Object.defineProperty(vm, prop, {
@@ -44,6 +51,7 @@ function construtionObjectProxy(vm, obj, namespace) {
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
                 obj[prop] = value;
+                renderData(vm, getNameSpace(namespace, prop))
             }
         })
         // 递归 由于不知道obj[prop]是数组还是对象，所以使用construtionProxy
@@ -63,7 +71,7 @@ function construtionArrayProxy(vm, arr, namespace) {
             for (let i = 0; i < arr.length; i++) {
                 result += arr[i] + ', '
             }
-            return result.substr(0, -2)
+            return result.slice(0, -2)
         },
         push() {},
         pop() {},
@@ -90,7 +98,8 @@ function defArrayFunc(obj, funcName, namespace, vm) {
         value: function(...args) {
             let originFun = arrayProto[funcName];
             const result = originFun.apply(this, args);
-            console.log(`${funcName}方法被调用`)
+            console.log(`${funcName}方法被调用`);
+            renderData(vm, getNameSpace(namespace, ''))
             return result
         }
     })
