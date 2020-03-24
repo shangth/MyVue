@@ -10,10 +10,10 @@ export function construtionProxy(vm, data, namespace) {
     let proxy = null
     if (data instanceof Array) {
         proxy = new Array(data.length);
+        proxy = construtionArrayProxy(vm, data, namespace)
         for (let i = 0; i < data.length; i++) {
             if (data[i] instanceof Object) proxy[i] = construtionProxy(vm, data[i], namespace)
         }
-        proxy = construtionArrayProxy(vm, data, namespace)
     } else if (data instanceof Object) {
         proxy = construtionObjectProxy(vm, data, namespace)
     } else {
