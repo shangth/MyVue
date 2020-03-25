@@ -8,11 +8,9 @@
 </head>
 
 <body>
-    <div id="test">
-        <!-- {{title}},{{sayHi}},{{obj.x}}<br>
-        <span>{{sayHi}}</span> -->
-        {{arr}}
-    </div>
+    <!-- {{title}},{{sayHi}},{{obj.x}}<br>
+    <span>{{sayHi}}</span> -->
+    <div id="test"><ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul></div>
     <script type="module">
         import Sth from './core/index.js';
         // 这里由于是一个模块，let的变量为局部变量，控制台无法访问，这里将sth放在window下，全局即可访问
@@ -31,7 +29,7 @@
                 },{
                     name: '苏煜文❤',
                     age: 18
-                },1]
+                }]
             },
         })
     </script>

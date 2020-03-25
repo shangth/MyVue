@@ -18,6 +18,7 @@ export function prepareRender(vm, vnode) {
     } else if (vnode.nodeType == 3) { // 文本节点
         analysisTemplateString(vnode)
     } else if (vnode.nodeType == 1) { // 标签节点
+        analysisAttr(vm, vnode)
         for (let i = 0; i < vnode.children.length; i++) {
             prepareRender(vm, vnode.children[i])
         }
@@ -34,15 +35,26 @@ function renderNode(vm, vnode) {
     if (vnode.nodeType == 3) {
         // 拿到这个文本节点用到的模板
         let templates = vnode2template.get(vnode);
-        if (templates) {
+        if (templates != null) {
             let result = vnode.text;
             for (let i = 0; i < templates.length; i++) {
-                let templateValue = getTemplateValue([vm._data], templates[i]);
-                if (templateValue) {
+                let templateValue = getTemplateValue([vm._data, vnode.env], templates[i]);
+                if (templateValue != null) {
                     result = result.replace('{{' + templates[i] + '}}', templateValue.toString());
                 }
             }
             vnode.elm.nodeValue = result
+        }
+    } else if (vnode.nodeType == 1 && vnode.tag == 'INPUT') {
+        // 拿到这个文本节点用到的模板
+        let templates = vnode2template.get(vnode);
+        if (templates != null) {
+            for (let i = 0; i < templates.length; i++) {
+                let templateValue = getTemplateValue([vm._data, vnode.env], templates[i]);
+                if (templateValue != null) {
+                    vnode.elm.value = templateValue
+                }
+            }
         }
     } else {
         for (let i = 0; i < vnode.children.length; i++) {
@@ -99,6 +111,8 @@ function setVnode2template(vnode, template) {
 function getTemplateName(template) {
     if (template.slice(0, 2) == '{{' && template.substr(-2) == '}}') {
         return template.slice(2, -2).trim()
+    } else {
+        return template
     }
 }
 
@@ -109,7 +123,7 @@ export function getTemplate2vnode() {
     return template2vnode
 }
 
-function getTemplateValue(objs, tempalte) {
+export function getTemplateValue(objs, tempalte) {
     for (let i = 0; i < objs.length; i++) {
         let temp = getValue(objs[i], tempalte);
         if (temp != null) {
@@ -117,4 +131,14 @@ function getTemplateValue(objs, tempalte) {
         }
     }
     return null
+}
+
+function analysisAttr(vm, vnode) {
+    if (vnode.nodeType == 1) {
+        let attrNames = vnode.elm.getAttributeNames();
+        if (attrNames.includes('v-model')) {
+            setTemplate2vnode(vnode, vnode.elm.getAttribute('v-model'))
+            setVnode2template(vnode, vnode.elm.getAttribute('v-model'))
+        }
+    }
 }
