@@ -2,9 +2,10 @@
 
 
 import VNode from "../vdom/vnode.js";
-import {prepareRender, getVnode2template, getTemplate2vnode} from "./render.js";
+import {prepareRender, getVnode2template, getTemplate2vnode, getVNodeByTemplate, clearMap} from "./render.js";
 import { vmodel } from "../grammer/vmodel.js";
 import { vforInit } from "../grammer/vfor.js";
+import { vbind } from "../grammer/vbind.js";
 import { mergeAttr } from "../util/objectUtil.js";
 
 export function initMount(Sth) {
@@ -37,7 +38,7 @@ function constructVNode(vm, elm, parent) { // 深搜
         }
     }
     
-    let childs = vnode.elm.childNodes;
+    let childs = vnode.nodeType == 0 ? vnode.parent.elm.childNodes : vnode.elm.childNodes;
     for (let i = 0; i < childs.length; i++) {
         let childNodes = constructVNode(vm, childs[i], vnode);
         if (childNodes instanceof VNode) {
@@ -66,15 +67,22 @@ function analysisAttr(vm, elm, parent) {
         if (attrNames.includes('v-for')) {
             return vforInit(vm, elm, parent, elm.getAttribute('v-for'));
         }
+        console.log(attrNames)
+        let bind = attrNames.filter((item) => item.startsWith('v-bind:') || item.startsWith(':'))
+        if (bind.length >= 1) {
+            vbind(vm, elm)
+        }
     }
 }
 
-// function mergeAttr(obj1, obj2) {
-//     if (!obj1) {
-//         return Object.assign({}, obj2)
-//     } 
-//     if (!obj2) {
-//         return Object.assign({}, obj1)
-//     }
-//     return Object.assign(obj1, obj2)
-// }
+export function rebuild(vm, template) {
+    let virtualNode = getVNodeByTemplate(template);
+    for (let i = 0; i < virtualNode.length; i++) {
+        virtualNode[i].parent.elm.innerHTML = '';
+        virtualNode[i].parent.elm.appendChild(virtualNode[i].elm);
+        let result = constructVNode(vm, virtualNode[i].elm, virtualNode[i].parent);
+        virtualNode[i].parent.children = [result];
+    }
+    clearMap();
+    prepareRender(vm, vm._vnode)
+}

@@ -1,5 +1,5 @@
 // 这个文件是用来存放虚拟节点构造函数的
-
+let num = 0
 export default class VNode{
     constructor(
         tag,  // 标签名，例如DIV，SPAN，#TEXT
@@ -20,5 +20,6 @@ export default class VNode{
         this.env = {},  // 环境变量
         this.instructions = null;  // 存放指令
         this.template = [];  // 涉及模板
+        this.num = num++
     }
 }

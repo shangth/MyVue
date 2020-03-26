@@ -7,7 +7,7 @@ import { getValue, mergeAttr } from '../util/objectUtil.js';
 // vm, elm, parent, (item,index) in list
 export function vforInit(vm, elm, parent, instructions) {
     // 创建虚拟节点
-    let virtualNode = new VNode(elm.nodeName, elm, [], '', getVirtualNodeData(instructions), parent, 0);
+    let virtualNode = new VNode(elm.nodeName, elm, [], '', getVirtualNodeData(instructions)[2], parent, 0);
     // 添加指令
     virtualNode.instructions = instructions;
     parent.elm.removeChild(elm);

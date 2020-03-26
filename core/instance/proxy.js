@@ -6,6 +6,7 @@
 
 
 import {renderData} from './render.js'
+import { rebuild } from './mount.js';
 
 
 
@@ -99,6 +100,7 @@ function defArrayFunc(obj, funcName, namespace, vm) {
             let originFun = arrayProto[funcName];
             const result = originFun.apply(this, args);
             console.log(`${funcName}方法被调用`);
+            rebuild(vm, getNameSpace(namespace, ''))
             renderData(vm, getNameSpace(namespace, ''))
             return result
         }
