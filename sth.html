@@ -16,15 +16,16 @@
 </head>
 
 <body>
-    <!-- <ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul> -->
-    <!-- <img v-for="(item,index) in imgSrcList" :src="item" alt=""> -->
     <div id="test">
+        <ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul>
         {{title}},{{sayHi}},{{obj.x}}<br>
         <span>{{sayHi}}</span>
-        <p :class='{big: obj.x > 0, red: obj.y > 1}'>hahaha</p>
         <input type="text" v-model='title' v-on:change="change">
         {{titleSayHi}}
-    </div>
+        <div>
+            <img v-for="(item,index) in imgSrcList" :src="item" alt="">
+        </div>
+        <p :class='{big: obj.x > 0, red: obj.y > 1}' @click="pClick">hahaha</p></div>
     <script type="module">
         import Sth from './core/index.js';
         // 这里由于是一个模块，let的变量为局部变量，控制台无法访问，这里将sth放在window下，全局即可访问
@@ -45,25 +46,28 @@
                     age: 18
                 }],
                 imgSrc: './img.jpg',
-                imgSrcList: ['./img.jpg', './img.jpg'],
+                imgSrcList: ['./img.jpg', './img.jpg','./img.jpg', './img.jpg'],
 
             },
             methods: {
                 change() {
                     console.log(123, this)
+                },
+                pClick() {
+                    console.log('点击p标签')
                 }
             },
             beforeCreate() {
-                console.log('生命周期beforeCreate')
+                console.log('>>>>>>>>>>>生命周期beforeCreate')
             },
             created() {
-                console.log('生命周期created')
+                console.log('>>>>>>>>>>>生命周期created')
             },
             beforeMount() {
-                console.log('生命周期beforeMount,挂载前')
+                console.log('>>>>>>>>>>>生命周期beforeMount,挂载前')
             },
             update() {
-                console.log('生命周期update,数据改变')
+                console.log('>>>>>>>>>>>生命周期update,数据改变')
             },
             computed: {
                 titleSayHi() {

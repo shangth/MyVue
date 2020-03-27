@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .big {
+            font-size: 50px;
+            font-weight: 800;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="test">
+        <p :class="titleClass">{{title}}</p>
+        <input type="text" v-model="newToDo">
+        <button @click="addToDo">添加</button>
+        <ol>
+            <li v-for="(item,index) in list">
+                {{item}}
+                <button @click='delete(index)'>删除</button>
+            </li>
+        </ol>
+    </div>
+    <script type="module">
+        import Sth from './core/index.js';
+        window.sth = new Sth({
+            el: 'test',
+            data: {
+                title: 'TODOLIST',
+                titleClass: 'big',
+                newToDo: '',
+                list: [
+                    'todo1',
+                    'todo2',
+                    'todo3',
+                    'todo4',
+                ],
+                shake: true
+            },
+            methods: {
+                addToDo() {
+                    if (this.newToDo) {
+                        this.list.push(this.newToDo)
+                        this.newToDo = ''
+                    }
+                },
+                delete(index) {
+                    console.log(index);
+                    if (this.shake) {
+                        this.list.splice(index, 1);
+                        this.shake = false;
+                        setTimeout(() => {
+                            this.shake = true;
+                        }, 100)
+                    }
+                }
+            },
+            beforeCreate() {
+                console.log('>>>>>>>>>>>生命周期beforeCreate')
+            },
+            created() {
+                console.log('>>>>>>>>>>>生命周期created')
+            },
+            beforeMount() {
+                console.log('>>>>>>>>>>>生命周期beforeMount,挂载前')
+            },
+            update() {
+                console.log('>>>>>>>>>>>生命周期update,数据改变')
+            },
+            computed: {
+                titleSayHi() {
+                    return this.title + this.sayHi
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

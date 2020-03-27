@@ -40,6 +40,7 @@ function constructVNode(vm, elm, parent) { // 深搜
     }
     checkVBind(vm, vnode)
     checkVOn(vm, vnode)
+    // let childs = vnode.elm.childNodes;
     let childs = vnode.nodeType == 0 ? vnode.parent.elm.childNodes : vnode.elm.childNodes;
     for (let i = 0; i < childs.length; i++) {
         let childNodes = constructVNode(vm, childs[i], vnode);
