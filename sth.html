@@ -5,14 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .big{
+            font-size: 30px;
+        }
+        .red{
+            color: #f00;
+        }
+    </style>
 </head>
 
 <body>
     <!-- {{title}},{{sayHi}},{{obj.x}}<br>
     <span>{{sayHi}}</span> -->
+    <!-- <ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul> -->
+    <!-- <img v-for="(item,index) in imgSrcList" :src="item" alt=""> -->
+    <!-- <input v-for="(item,index) in arr" type="text" v-model='item.name'> -->
     <div id="test">
-        <!-- <ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul> -->
-        <img :src="imgSrc" alt="">
+        <p :class='{big: obj.x > 0, red: obj.y > 1}'>hahaha</p>
+
     </div>
     <script type="module">
         import Sth from './core/index.js';
@@ -33,7 +44,9 @@
                     name: '苏煜文❤',
                     age: 18
                 }],
-                imgSrc: './img.jpg'
+                imgSrc: './img.jpg',
+                imgSrcList: ['./img.jpg', './img.jpg'],
+
             },
         })
     </script>

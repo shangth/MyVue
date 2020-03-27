@@ -33,6 +33,7 @@ function analysisInstructions(vm, instructions, elm, parent) {
         throw new Error(`${inSet[2]}不存在`)
     }
     let resultSet = [];
+    let attributeList = elm.getAttributeNames();
     for (let i = 0; i < dataSet.length; i++) {
         // 根据list生成新的节点
         let tempDom = document.createElement(elm.nodeName);
@@ -41,6 +42,12 @@ function analysisInstructions(vm, instructions, elm, parent) {
         // 生成局部变量保存在env中
         let env = analysisKV(inSet[0], dataSet[i], i);
         tempDom.setAttribute('env', JSON.stringify(env));
+        // 给新节点添加虚拟节点其他属性 例如src, class, id等
+        for (let j = 0; j < attributeList.length; j++) {
+            if (attributeList[j] != 'v-for') {
+                tempDom.setAttribute(attributeList[j], elm.getAttribute(attributeList[j]));
+            }
+        }
         // 添加到父级节点
         parent.elm.appendChild(tempDom);
         resultSet.push(tempDom)
