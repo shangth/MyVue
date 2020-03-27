@@ -28,21 +28,16 @@ export function checkVBind(vm, vnode) {
     }
     let attrNames = vnode.elm.getAttributeNames();
     let filterAttrNames = attrNames.filter((item) => item.startsWith('v-bind:') || item.startsWith(':'))
-    console.log(vnode,attrNames)
     for (let i = 0; i < filterAttrNames.length; i++) {
         let value = vnode.elm.getAttribute(filterAttrNames[i]);
         let trueAtrr = filterAttrNames[i].split(':')[1];
-        console.log(value)
-        console.log(/^{[\w\W]+}$/.test(value))
         if (/^{[\w\W]+}$/.test(value)) {
             let str = value.slice(1, -1);
             let expressionList = str.split(',');
             let result = analysisExpression(vm, vnode, expressionList);
-            console.log(result)
             vnode.elm.setAttribute(trueAtrr, result)
         } else {
             let trueValue = getTemplateValue([vm._data, vnode.env], value);
-            console.log(trueAtrr, trueValue)
             vnode.elm.setAttribute(trueAtrr, trueValue)
         }
     }

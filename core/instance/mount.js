@@ -7,6 +7,7 @@ import { vmodel } from "../grammer/vmodel.js";
 import { vforInit } from "../grammer/vfor.js";
 import { checkVBind } from "../grammer/vbind.js";
 import { mergeAttr } from "../util/objectUtil.js";
+import { checkVOn } from "../grammer/von.js";
 
 export function initMount(Sth) {
     Sth.prototype.$mount = function (el) {
@@ -38,6 +39,7 @@ function constructVNode(vm, elm, parent) { // 深搜
         }
     }
     checkVBind(vm, vnode)
+    checkVOn(vm, vnode)
     let childs = vnode.nodeType == 0 ? vnode.parent.elm.childNodes : vnode.elm.childNodes;
     for (let i = 0; i < childs.length; i++) {
         let childNodes = constructVNode(vm, childs[i], vnode);
@@ -67,7 +69,7 @@ function analysisAttr(vm, elm, parent) {
         if (attrNames.includes('v-for')) {
             return vforInit(vm, elm, parent, elm.getAttribute('v-for'));
         }
-        console.log(attrNames)
+        // console.log(attrNames)
         // let bind = attrNames.filter((item) => item.startsWith('v-bind:') || item.startsWith(':'))
         // if (bind.length >= 1) {
         //     vbind(vm, elm)

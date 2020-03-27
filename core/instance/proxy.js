@@ -41,7 +41,11 @@ function construtionObjectProxy(vm, obj, namespace) {
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
                 obj[prop] = value;
-                renderData(vm, getNameSpace(namespace, prop))
+                renderData(vm, getNameSpace(namespace, prop));
+                // 生命周期update
+                if (vm._update != null) {
+                    vm._update.call(vm);
+                }
             }
         })
         Object.defineProperty(vm, prop, {
@@ -52,7 +56,11 @@ function construtionObjectProxy(vm, obj, namespace) {
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
                 obj[prop] = value;
-                renderData(vm, getNameSpace(namespace, prop))
+                renderData(vm, getNameSpace(namespace, prop));
+                // 生命周期update
+                if (vm._update != null) {
+                    vm._update.call(vm);
+                }
             }
         })
         // 递归 由于不知道obj[prop]是数组还是对象，所以使用construtionProxy
@@ -100,8 +108,12 @@ function defArrayFunc(obj, funcName, namespace, vm) {
             let originFun = arrayProto[funcName];
             const result = originFun.apply(this, args);
             console.log(`${funcName}方法被调用`);
-            rebuild(vm, getNameSpace(namespace, ''))
-            renderData(vm, getNameSpace(namespace, ''))
+            rebuild(vm, getNameSpace(namespace, ''));
+            renderData(vm, getNameSpace(namespace, ''));
+            // 生命周期update
+            if (vm._update != null) {
+                vm._update.call(vm);
+            }
             return result
         }
     })

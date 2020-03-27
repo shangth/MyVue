@@ -41,9 +41,12 @@ function renderNode(vm, vnode) {
 			let result = vnode.text;
 			for (let i = 0; i < templates.length; i++) {
 				let templateValue = getTemplateValue(
-					[vm._data, vnode.env],
+					[vm._data, vnode.env, vm._computed],
 					templates[i]
-				);
+                );
+                if (typeof templateValue == 'function') {
+                    templateValue = templateValue.call(vm)
+                }
 				if (templateValue != null) {
 					result = result.replace(
 						"{{" + templates[i] + "}}",

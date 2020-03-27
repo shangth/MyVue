@@ -16,14 +16,14 @@
 </head>
 
 <body>
-    <!-- {{title}},{{sayHi}},{{obj.x}}<br>
-    <span>{{sayHi}}</span> -->
     <!-- <ul><li v-for="(item,index) in arr">{{item.name}}{{index}}</li></ul> -->
     <!-- <img v-for="(item,index) in imgSrcList" :src="item" alt=""> -->
-    <!-- <input v-for="(item,index) in arr" type="text" v-model='item.name'> -->
     <div id="test">
+        {{title}},{{sayHi}},{{obj.x}}<br>
+        <span>{{sayHi}}</span>
         <p :class='{big: obj.x > 0, red: obj.y > 1}'>hahaha</p>
-
+        <input type="text" v-model='title' v-on:change="change">
+        {{titleSayHi}}
     </div>
     <script type="module">
         import Sth from './core/index.js';
@@ -48,6 +48,28 @@
                 imgSrcList: ['./img.jpg', './img.jpg'],
 
             },
+            methods: {
+                change() {
+                    console.log(123, this)
+                }
+            },
+            beforeCreate() {
+                console.log('生命周期beforeCreate')
+            },
+            created() {
+                console.log('生命周期created')
+            },
+            beforeMount() {
+                console.log('生命周期beforeMount,挂载前')
+            },
+            update() {
+                console.log('生命周期update,数据改变')
+            },
+            computed: {
+                titleSayHi() {
+                    return this.title + this.sayHi
+                }
+            }
         })
     </script>
 </body>

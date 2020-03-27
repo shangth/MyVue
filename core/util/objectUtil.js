@@ -4,7 +4,6 @@ export function getValue(obj, name) {
     }
     let nameList = name.split('.'); // obj, x
     let temp = obj;
-    // debugger
     for (let i = 0; i < nameList.length; i++) {
         if (temp[nameList[i]] != null) {
             temp = temp[nameList[i]]
