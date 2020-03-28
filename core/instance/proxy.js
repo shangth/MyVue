@@ -40,11 +40,15 @@ function construtionObjectProxy(vm, obj, namespace) {
             },
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
+                // 生命周期beforeUpdate
+                if (vm._beforeUpdate != null) {
+                    vm._beforeUpdate.call(vm);
+                }
                 obj[prop] = value;
                 renderData(vm, getNameSpace(namespace, prop));
-                // 生命周期update
-                if (vm._update != null) {
-                    vm._update.call(vm);
+                // 生命周期updated
+                if (vm._updated != null) {
+                    vm._updated.call(vm);
                 }
             }
         })
@@ -55,11 +59,15 @@ function construtionObjectProxy(vm, obj, namespace) {
             },
             set(value) {
                 console.log(`${getNameSpace(namespace, prop)}属性修改，新的值为${value}`)
+                // 生命周期beforeUpdate
+                if (vm._beforeUpdate != null) {
+                    vm._beforeUpdate.call(vm);
+                }
                 obj[prop] = value;
                 renderData(vm, getNameSpace(namespace, prop));
-                // 生命周期update
-                if (vm._update != null) {
-                    vm._update.call(vm);
+                // 生命周期updated
+                if (vm._updated != null) {
+                    vm._updated.call(vm);
                 }
             }
         })
@@ -105,14 +113,18 @@ function defArrayFunc(obj, funcName, namespace, vm) {
         enumerable: true,
         configurable: true,
         value: function(...args) {
+            // 生命周期beforeUpdate
+            if (vm._beforeUpdate != null) {
+                vm._beforeUpdate.call(vm);
+            }
             let originFun = arrayProto[funcName];
             const result = originFun.apply(this, args);
             console.log(`${funcName}方法被调用`);
             rebuild(vm, getNameSpace(namespace, ''));
             renderData(vm, getNameSpace(namespace, ''));
-            // 生命周期update
-            if (vm._update != null) {
-                vm._update.call(vm);
+            // 生命周期updated
+            if (vm._updated != null) {
+                vm._updated.call(vm);
             }
             return result
         }

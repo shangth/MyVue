@@ -88,7 +88,7 @@ export function renderData(vm, data) {
 
 // 分析模板字符串
 function analysisTemplateString(vnode) {
-	let templateStrList = vnode.text.match(/{{[a-zA-Z0-9_$.]+}}/g);
+    let templateStrList = vnode.text.match(/{{[a-zA-Z0-9_$.]+}}/g);
 	for (let i = 0; templateStrList && i < templateStrList.length; i++) {
 		setTemplate2vnode(vnode, templateStrList[i]);
 		setVnode2template(vnode, templateStrList[i]);

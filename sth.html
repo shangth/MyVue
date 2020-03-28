@@ -66,8 +66,14 @@
             beforeMount() {
                 console.log('>>>>>>>>>>>生命周期beforeMount,挂载前')
             },
-            update() {
-                console.log('>>>>>>>>>>>生命周期update,数据改变')
+            mountd() {
+                console.log('>>>>>>>>>>>生命周期mountd,挂载后')
+            },
+            beforeUpdate() {
+                console.log('>>>>>>>>>>>生命周期beforeUpdate,数据改变前')
+            },
+            updated() {
+                console.log('>>>>>>>>>>>生命周期updated,数据改变后')
             },
             computed: {
                 titleSayHi() {

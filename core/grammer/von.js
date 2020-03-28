@@ -16,7 +16,6 @@ export function checkVOn(vm, vnode) {
 }
 
 function von(vm, vnode, eventName, name) {
-    console.log(name);
     let argList = []
     let index = name.indexOf('(');
     let funName = name
@@ -28,7 +27,6 @@ function von(vm, vnode, eventName, name) {
     for (let i = 0; i < argList.length; i++) {
         argList[i] = getTemplateValue([vm._data, vnode.env],argList[i])
     }
-    console.log(argList)
     let method = getValue(vm._methods, funName);
     if (method) {
         // console.log(eventName)

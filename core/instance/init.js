@@ -2,6 +2,7 @@
 
 import { construtionProxy } from "./proxy.js";
 import { mount } from "./mount.js";
+import { getVnode2template } from "./render.js";
 
 // 编号，给每个Sth对象都加一个唯一编号，保证不重复
 let uid = 0;
@@ -57,17 +58,26 @@ export function initMixIn(Sth) {
 
 
 
-        /////////////////////////////////////////////////////////初始化update方法
-        // 初始化created方法
-        if (options && options.update) {
-            vm._update = options.update;
+        /////////////////////////////////////////////////////////初始化beforeUpdate方法
+        // 初始化beforeUpdate方法
+        if (options && options.beforeUpdate) {
+            vm._beforeUpdate = options.beforeUpdate;
+        }
+        /////////////////////////////////////////////////////////初始化updated方法
+        // 初始化updated方法
+        if (options && options.updated) {
+            vm._updated = options.updated;
         }
         
 
-        /////////////////////////////////////////////////////////初始化并执行beforeMount方法以及挂载
+        /////////////////////////////////////////////////////////初始化并执行beforeMount、mountd方法以及挂载
 		// 初始化beforeMount方法
 		if (options && options.beforeMount) {
 			vm._beforeMount = options.beforeMount;
+		}
+		// 初始化mountd方法
+		if (options && options.mountd) {
+			vm._mountd = options.mountd;
 		}
 		// 初始化el并挂载
 		if (options && options.el) {
@@ -77,6 +87,11 @@ export function initMixIn(Sth) {
 				vm._beforeMount.call(this);
 			}
 			mount(vm, rootDom);
-		}
+			// 生命周期mountd
+			if (vm._mountd != null) {
+				vm._mountd.call(this);
+			}
+        }
+        // console.log(getVnode2template())
 	};
 }
